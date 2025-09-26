@@ -173,7 +173,13 @@ public class tienda extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
 
-            String nombre = textNombre.getText();
+            String nombre = textNombre.getText().trim();
+            
+            if (nombre.isEmpty()) {
+                showMessageDialog(this,
+                        "No puede a ver campos vacios ");
+                return;
+            } 
            
             double precio = Double.parseDouble(textPrecio.getText());
             int cantidad = Integer.parseInt(textCantidad.getText());
@@ -195,6 +201,7 @@ public class tienda extends javax.swing.JFrame {
             textCantidad.setText("");
             
             mostrarInventario();
+            showMessageDialog(this, "Producto agregado con éxito.");
 
         } catch (NumberFormatException e) {
                    showMessageDialog(this, "Error: precio o cantidad no válidos.");
@@ -242,6 +249,7 @@ public class tienda extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
+            showMessageDialog(this, "ocurrio un error inesperado");
         }
 
         
