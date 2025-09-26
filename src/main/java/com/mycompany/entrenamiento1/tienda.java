@@ -1,6 +1,7 @@
 
 package com.mycompany.entrenamiento1;
 
+import static javax.swing.JOptionPane.showInputDialog;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
 
@@ -196,12 +197,56 @@ public class tienda extends javax.swing.JFrame {
             mostrarInventario();
 
         } catch (NumberFormatException e) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Error: precio o cantidad no válidos.");
+                   showMessageDialog(this, "Error: precio o cantidad no válidos.");
           
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int fila = mostrarTabla.getSelectedRow();
+        if (fila == -1) {
+            showMessageDialog(this, "debes seleccionar algun producto");
+            return;
+
+        }
+        
+            String nombre = mostrarTabla.getValueAt(fila, 0).toString();
+            String precioString = mostrarTabla.getValueAt(fila, 1).toString();
+             int cantidadDisponible = stock.get(nombre);
+       
+        try {
+            String input = showInputDialog(this, "ingresa la cantidad a comparar");
+            if (input == null) {
+                return;
+
+            }
+
+            int cantidadCompra = Integer.parseInt(input);
+           double precio =Double.parseDouble(precioString);
+           
+            if (cantidadCompra > 0 && cantidadCompra <= cantidadDisponible) {
+                
+                int nuevaCantidad = cantidadDisponible - cantidadCompra;
+                stock.put(nombre, nuevaCantidad);
+                mostrarInventario();
+                
+                
+                showMessageDialog(this, "**Compra exitosa **" +nombre+"   Total a pagar " +precio*cantidadCompra);
+                
+                
+                
+                
+
+            } else {
+                showMessageDialog(this, "Cantidad inválida o mayor al stock disponible.");
+            }
+
+        } catch (Exception e) {
+        }
+
+        
+        
+        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
