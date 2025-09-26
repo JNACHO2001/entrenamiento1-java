@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class tienda extends javax.swing.JFrame {
-    private DefaultTableModel modeloTabla;
+    private final DefaultTableModel modeloTabla;
 
 
     private java.util.Map<String, Integer> stock = new java.util.HashMap<>();
@@ -163,15 +163,17 @@ public class tienda extends javax.swing.JFrame {
     
     private void mostrarInventario() {
     modeloTabla.setRowCount(0); // Limpiar tabla
+    
+        productos.forEach((producto) -> {
 
-    for (Producto producto : productos) {
-        int cantidad = stock.getOrDefault(producto.getNombre(), 0);
-        modeloTabla.addRow(new Object[]{
-            producto.getNombre(),
-            producto.getPrecio(),
-            cantidad
+            int cantidad = stock.getOrDefault(producto.getNombre(), 0);
+            modeloTabla.addRow(new Object[]{
+                producto.getNombre(),
+                producto.getPrecio(),
+                cantidad
+            });
+
         });
-    }
 }
 
     
@@ -274,10 +276,7 @@ public class tienda extends javax.swing.JFrame {
     }//GEN-LAST:event_textPrecioActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (modeloTabla.getRowCount() == 0) {
-            showMessageDialog(this, "No hay productos en la lista");
-            return;
-        }
+     
 
         Producto[] resultado = new Producto[2]; // índice 0 = máximo, 1 = mínimo
 
