@@ -1,6 +1,7 @@
 
 package com.mycompany.entrenamiento1;
 
+import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -172,8 +173,15 @@ public class tienda extends javax.swing.JFrame {
         try {
 
             String nombre = textNombre.getText();
+           
             double precio = Double.parseDouble(textPrecio.getText());
             int cantidad = Integer.parseInt(textCantidad.getText());
+            
+            if (stock.containsKey(nombre)) {
+            showMessageDialog(this, 
+                "El producto '" + nombre + "' ya existe.\nPor favor ingresa otro nombre.");
+            return; // no seguimos con la inserción
+        }
 
             Producto producto = new Producto(nombre, precio);
             productos.add(producto);
@@ -194,7 +202,7 @@ public class tienda extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void textNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNombreActionPerformed
