@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 public class tienda extends javax.swing.JFrame {
     private final DefaultTableModel modeloTabla;
 
+    private java.util.List<Compra> compras = new java.util.ArrayList<>();
 
     private java.util.Map<String, Integer> stock = new java.util.HashMap<>();
     private java.util.List<Producto> productos = new java.util.ArrayList<>();
@@ -36,6 +37,7 @@ public class tienda extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         mostrarTabla = new javax.swing.JTable();
+        textExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,34 +101,42 @@ public class tienda extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(mostrarTabla);
 
+        textExit.setText("Salir");
+        textExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textCantidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(82, 82, 82)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jButton3)))
+                            .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textCantidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(82, 82, 82)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(213, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(textExit)
+                .addGap(177, 177, 177))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,9 +162,15 @@ public class tienda extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addGap(26, 26, 26)
-                .addComponent(jButton3)
-                .addGap(24, 24, 24))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton3)
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textExit)
+                        .addGap(37, 37, 37))))
         );
 
         pack();
@@ -231,7 +247,7 @@ public class tienda extends javax.swing.JFrame {
              int cantidadDisponible = stock.get(nombre);
        
         try {
-            String input = showInputDialog(this, "ingresa la cantidad a comparar");
+            String input = showInputDialog(this, "ingresa la cantidad a comprar");
             if (input == null) {
                 return;
 
@@ -240,14 +256,20 @@ public class tienda extends javax.swing.JFrame {
             int cantidadCompra = Integer.parseInt(input);
            double precio =Double.parseDouble(precioString);
            
+           double total = precio*cantidadCompra;
+           
             if (cantidadCompra > 0 && cantidadCompra <= cantidadDisponible) {
                 
                 int nuevaCantidad = cantidadDisponible - cantidadCompra;
                 stock.put(nombre, nuevaCantidad);
+                
+                Compra compra =new Compra(nombre,cantidadCompra , precio,total);
+                compras.add(compra);
+                System.out.println(compras.toString());
                 mostrarInventario();
                 
                 
-                showMessageDialog(this, "**Compra exitosa **" +nombre+"   Total a pagar " +precio*cantidadCompra);
+                showMessageDialog(this, "**Compra exitosa ** \n"+nombre+"\n"+" Total a pagar :" + precio*cantidadCompra);
                 
                 
                 
@@ -281,6 +303,8 @@ public class tienda extends javax.swing.JFrame {
         Producto[] resultado = new Producto[2]; // índice 0 = máximo, 1 = mínimo
 
         productos.forEach(product -> {
+            
+                // Recorrer todos los productos para encontrar máximo y mínimo
 
             if (resultado[0] == null || product.getPrecio() > resultado[0].getPrecio()) {
                 resultado[0] = product;
@@ -306,9 +330,29 @@ public class tienda extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void textExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textExitActionPerformed
+        if (compras.isEmpty()) {
+            showMessageDialog(this, "No se realizaron compras.");
+        } else {
+            StringBuilder listaCompras = new StringBuilder("Compras realizadas:\n\n");
+
+            compras.forEach((compra) -> {
+
+                listaCompras.append("Producto: ").append(compra.getNombre())
+                        .append(", Cantidad: ").append(compra.getCantidadCompra())
+                        .append(", Precio Unitario: $").append( compra.getPrecio())
+                        .append(", Total: $").append( compra.getTotal())
+                        .append("\n");
+
+            });
+
+            showMessageDialog(this, listaCompras.toString());
+
+        }
+
+        System.exit(0); //
+    }//GEN-LAST:event_textExitActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -341,6 +385,7 @@ public class tienda extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable mostrarTabla;
     private javax.swing.JTextField textCantidad;
+    private javax.swing.JButton textExit;
     private javax.swing.JTextField textNombre;
     private javax.swing.JTextField textPrecio;
     // End of variables declaration//GEN-END:variables
