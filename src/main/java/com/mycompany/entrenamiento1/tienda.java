@@ -5,6 +5,7 @@ import java.awt.HeadlessException;
 import static javax.swing.JOptionPane.showInputDialog;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
+import jdk.jshell.spi.ExecutionControl;
 
 
 public class tienda extends javax.swing.JFrame {
@@ -236,6 +237,10 @@ public class tienda extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             showMessageDialog(this, "Error: precio o cantidad no válidos.");
 
+        }
+        catch(Exception e){
+            showMessageDialog(this, "Error: inesperado");
+        
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
