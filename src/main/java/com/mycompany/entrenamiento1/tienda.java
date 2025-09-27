@@ -199,38 +199,43 @@ public class tienda extends javax.swing.JFrame {
         try {
 
             String nombre = textNombre.getText().trim();
-            
+
             if (nombre.isEmpty()) {
                 showMessageDialog(this,
                         "No puede a ver campos vacios ");
                 return;
-            } 
-           
+            }
+
             double precio = Double.parseDouble(textPrecio.getText());
             int cantidad = Integer.parseInt(textCantidad.getText());
-            
+
+            if (precio <= 0 || cantidad <= 0 ) {
+
+                showMessageDialog(this, "deben ser positivos");
+                return;
+
+            }
+
             if (stock.containsKey(nombre)) {
-            showMessageDialog(this, 
-                "El producto '" + nombre + "' ya existe.\nPor favor ingresa otro nombre.");
-            return; // no seguimos con la inserción
-        }
+                showMessageDialog(this,
+                        "El producto '" + nombre + "' ya existe.\nPor favor ingresa otro nombre.");
+                return; // no seguimos con la inserción
+            }
 
             Producto producto = new Producto(nombre, precio);
             productos.add(producto);
             stock.put(nombre, cantidad);
 
-        
-
             textNombre.setText("");
             textPrecio.setText("");
             textCantidad.setText("");
-            
+
             mostrarInventario();
             showMessageDialog(this, "Producto agregado con éxito.");
 
         } catch (NumberFormatException e) {
-                   showMessageDialog(this, "Error: precio o cantidad no válidos.");
-          
+            showMessageDialog(this, "Error: precio o cantidad no válidos.");
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
